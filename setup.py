@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 """\
 SmartyPants: a smart-quotes plugin.
@@ -11,10 +12,15 @@ it's available on PyPI. For more information, consult
 
 The first two version numbers are Chad Miller's. The last two are
 mine.
+
+This is a Bond fork of SmartyPants (with unicode support!).
+
 """
 
 # All of this is adapted from markdown2's setup.py.
-from distutils.core import setup
+# from distutils.core import setup
+# Use setuptools instead
+from setuptools import setup
 
 doclines = __doc__.split("\n")
 classifiers = """\
@@ -29,11 +35,11 @@ Topic :: Text Processing :: Filters
 """
 
 setup(
-    name = 'smartypants',
-    version = '1.6.0.3',
+    name = 'bond-smartypants',
+    version = '1.5_2.0',
     author = 'Chad Miller',
-    maintainer = 'Hao Lian',
-    maintainer_email = "me@hao{no-spam}lian.org",
+    maintainer = "Anthony O'Brien",
+    maintainer_email = "anthony@bond{spam=NO!}gifts.com",
     url = 'http://web.chad.org/projects/smartypants.py/',
     license = 'BSD',
     platforms = ['any'],

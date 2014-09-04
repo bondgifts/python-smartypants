@@ -237,6 +237,10 @@ To Do list
 Version History
 ===============
 
+1.5_2.0: Thu, 04 Sep 2014 12:31:22 -0400
+    - Added unicode output option and added new attributes (Bond usage cases).
+        Note that version number jumps to reflect fork implementations.
+
 1.5_1.6: Fri, 27 Jul 2007 07:06:40 -0400
     - Fixed bug where blocks of precious unalterable text was instead
       interpreted.  Thanks to Le Roux and Dirk van Oosterbosch.
@@ -956,7 +960,7 @@ if __name__ == "__main__":
 
 
 
-__author__ = "Chad Miller <smartypantspy@chad.org>"
-__version__ = "1.5_1.6: Fri, 27 Jul 2007 07:06:40 -0400"
-__url__ = "http://wiki.chad.org/SmartyPantsPy"
-__description__ = "Smart-quotes, smart-ellipses, and smart-dashes for weblog entries in pyblosxom"
+__author__ = "Anthony O'Brien <anthony@bondgifts.com>"
+__version__ = "1.5_2.0"
+__url__ = "https://github.com/bondgifts/python-smartypants"
+__description__ = "Smart-quotes, smart-ellipses, and smart-dashes for unicode and HTML/XML usage."
