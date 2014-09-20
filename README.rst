@@ -70,5 +70,7 @@ put it on PyPI (http://pypi.python.org/pypi/smartypants).
 Following that Jeff Schenck <http://jeffschenck.com/> added it to Github and 
 made a small tweak where ``<tt>`` tags are skipped.
 
+Bond needed this functionality but with support for unicode, so another fork was made.
+
 And now, we are here.
 
