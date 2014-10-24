@@ -54,6 +54,10 @@ not be appropriate, such as source code or example markup.
 Backslash Escapes
 =================
 
+By default escapes are not processed. The process escapes, the
+`process_escapes=True` keyword argument must be passed. See below for a
+description of what this does.
+
 If you need to use literal straight quotes (or plain hyphens and
 periods), SmartyPants accepts the following backslash escape sequences
 to force non-smart punctuation. It does so by transforming the escape
@@ -80,13 +84,13 @@ Options
 =======
 
 For Pyblosxom users, the ``smartypants_attributes`` attribute is where you
-specify configuration options. 
+specify configuration options.
 
 Numeric values are the easiest way to configure SmartyPants' behavior:
 
 "0"
     Suppress all transformations. (Do nothing.)
-"1" 
+"1"
     Performs default SmartyPants transformations: quotes (including
     \`\`backticks'' -style), em-dashes, and ellipses. "``--``" (dash dash)
     is used to signify an em-dash; there is no support for en-dashes.
@@ -113,7 +117,7 @@ the behavior of SmartyPants':
 
 "B1"
     Performs the following transformations: single (``'``) and double (``"``)
-    quotes. There is not support for bacticks, dashes (en- and em-), or 
+    quotes. There is not support for bacticks, dashes (en- and em-), or
     ellipses.
 
 
@@ -161,7 +165,7 @@ example, to educate normal quotes and em-dashes, but not ellipses or
     regular quotes so SmartyPants can educate them, you should pass the
     following to the smarty_pants attribute:
 
-The ``smartypants_forbidden_flavours`` list contains pyblosxom flavours for 
+The ``smartypants_forbidden_flavours`` list contains pyblosxom flavours for
 which no Smarty Pants rendering will occur.
 
 
@@ -237,6 +241,10 @@ To Do list
 Version History
 ===============
 
+1.5_2.1: Fri, 24 Oct 2014, 18:53:25 -0400
+    - Added option to process escapes. By default backslash escapes will
+        not be processed.
+
 1.5_2.0: Thu, 04 Sep 2014 12:31:22 -0400
     - Added unicode output option and added new attributes (Bond usage cases).
         Note that version number jumps to reflect fork implementations.
@@ -244,9 +252,9 @@ Version History
 1.5_1.6: Fri, 27 Jul 2007 07:06:40 -0400
     - Fixed bug where blocks of precious unalterable text was instead
       interpreted.  Thanks to Le Roux and Dirk van Oosterbosch.
-    
+
 1.5_1.5: Sat, 13 Aug 2005 15:50:24 -0400
-    - Fix bogus magical quotation when there is no hint that the 
+    - Fix bogus magical quotation when there is no hint that the
       user wants it, e.g., in "21st century".  Thanks to Nathan Hamblen.
     - Be smarter about quotes before terminating numbers in an en-dash'ed
       range.
@@ -258,7 +266,7 @@ Version History
       (This was my first every Python program.  Sue me!)
 
 1.5_1.3: Wed, 15 Sep 2004 18:25:58 -0400
-    - Abort processing if the flavour is in forbidden-list.  Default of 
+    - Abort processing if the flavour is in forbidden-list.  Default of
       [ "rss" ]   (Idea of Wolfgang SCHNERRING.)
     - Remove stray virgules from en-dashes.  Patch by Wolfgang SCHNERRING.
 
@@ -329,7 +337,7 @@ SmartyPants_ license::
         the documentation and/or other materials provided with the
         distribution.
 
-    *   Neither the name "SmartyPants" nor the names of its contributors 
+    *   Neither the name "SmartyPants" nor the names of its contributors
         may be used to endorse or promote products derived from this
         software without specific prior written permission.
 
@@ -349,7 +357,7 @@ SmartyPants_ license::
 smartypants.py license::
 
     smartypants.py is a derivative work of SmartyPants.
-    
+
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions are
     met:
@@ -448,7 +456,7 @@ def smartyPants(text, attr=default_smartypants_attr, **kwargs):
     # 1 : set all
     # 2 : set all, using old school en- and em- dash shortcuts
     # 3 : set all, using inverted old school en and em- dash shortcuts
-    # 
+    #
     # q : quotes
     # b : backtick quotes (``double'' only)
     # B : backtick quotes (``double'' and `single')
@@ -513,7 +521,7 @@ def smartyPants(text, attr=default_smartypants_attr, **kwargs):
 
     prev_token_last_char = ""
     # This is a cheat, used to get some context
-    # for one-character tokens that consist of 
+    # for one-character tokens that consist of
     # just a quote char. What we do is remember
     # the last character of the previous text
     # token, to use as context to curl single-
@@ -542,7 +550,8 @@ def smartyPants(text, attr=default_smartypants_attr, **kwargs):
             last_char = t[-1:] # Remember last char of this token before processing.
             if not in_pre:
                 oldstr = t
-                t = processEscapes(t)
+                if kwargs.get('process_escapes', False):  # only process escapes if requested.
+                    t = processEscapes(t)
 
                 if convert_quot != "0":
                     t = re.sub('&quot;', '"', t)
@@ -598,9 +607,9 @@ def smartyPants(text, attr=default_smartypants_attr, **kwargs):
 def educateQuotes(str):
     """
     Parameter:  String.
-    
+
     Returns:    The string, with "educated" curly quote HTML entities.
-    
+
     Example input:  "Isn't this fun?"
     Example output: &#8220;Isn&#8217;t this fun?&#8221;
     """
@@ -710,7 +719,7 @@ def educateSingleBackticks(str):
     Parameter:  String.
     Returns:    The string, with `backticks' -style single quotes
                 translated into HTML curly quote entities.
-    
+
     Example input:  `Isn't this fun?'
     Example output: &#8216;Isn&#8217;t this fun?&#8217;
     """
@@ -723,7 +732,7 @@ def educateSingleBackticks(str):
 def educateDashes(str):
     """
     Parameter:  String.
-    
+
     Returns:    The string, with each instance of "--" translated to
                 an em-dash HTML entity.
     """
@@ -736,7 +745,7 @@ def educateDashes(str):
 def educateDashesOldSchool(str):
     """
     Parameter:  String.
-    
+
     Returns:    The string, with each instance of "--" translated to
                 an en-dash HTML entity, and each "---" translated to
                 an em-dash HTML entity.
@@ -750,7 +759,7 @@ def educateDashesOldSchool(str):
 def educateDashesOldSchoolInverted(str):
     """
     Parameter:  String.
-    
+
     Returns:    The string, with each instance of "--" translated to
                 an em-dash HTML entity, and each "---" translated to
                 an en-dash HTML entity. Two reasons why: First, unlike the
@@ -773,7 +782,7 @@ def educateEllipses(str):
     Parameter:  String.
     Returns:    The string, with each instance of "..." translated to
                 an ellipsis HTML entity.
-    
+
     Example input:  Huh...?
     Example output: Huh&#8230;?
     """
@@ -813,7 +822,7 @@ def processEscapes(str):
     Returns:    The string, with after processing the following backslash
                 escape sequences. This is useful if you want to force a "dumb"
                 quote or other character to appear.
-    
+
                 Escape  Value
                 ------  -----
                 \\      &#92;
@@ -842,7 +851,7 @@ def _tokenize(str):
                 run of text between tags. Each element of the array is a
                 two-element array; the first is either 'tag' or 'text';
                 the second is the actual value.
-    
+
     Based on the _tokenize() subroutine from Brad Choate's MTRegex plugin.
         <http://www.bradchoate.com/past/mtregex.php>
     """
@@ -878,14 +887,14 @@ def _tokenize(str):
 
 ### New Functions
 def unescape_html(text):
-    """Replaces HTML/XML character references in a string with unicode 
+    """Replaces HTML/XML character references in a string with unicode
     encodings.
 
     SRC: http://effbot.org/zone/re-sub.htm#unescape-html
             `October 28, 2006 | Fredrik Lundh`
 
     :param text: HTML/XML encoded source text
-    :rtype: string or unicode (if necessary) 
+    :rtype: string or unicode (if necessary)
     """
     def fixup(m):
         text = m.group(0)
@@ -941,10 +950,10 @@ if __name__ == "__main__":
 
         def test_skip_tags(self):
             self.assertEqual(
-                sp("""<script type="text/javascript">\n<!--\nvar href = "http://www.google.com";\nvar linktext = "google";\ndocument.write('<a href="' + href + '">' + linktext + "</a>");\n//-->\n</script>"""), 
+                sp("""<script type="text/javascript">\n<!--\nvar href = "http://www.google.com";\nvar linktext = "google";\ndocument.write('<a href="' + href + '">' + linktext + "</a>");\n//-->\n</script>"""),
                    """<script type="text/javascript">\n<!--\nvar href = "http://www.google.com";\nvar linktext = "google";\ndocument.write('<a href="' + href + '">' + linktext + "</a>");\n//-->\n</script>""")
             self.assertEqual(
-                sp("""<p>He said &quot;Let's write some code.&quot; This code here <code>if True:\n\tprint &quot;Okay&quot;</code> is python code.</p>"""), 
+                sp("""<p>He said &quot;Let's write some code.&quot; This code here <code>if True:\n\tprint &quot;Okay&quot;</code> is python code.</p>"""),
                    """<p>He said &#8220;Let&#8217;s write some code.&#8221; This code here <code>if True:\n\tprint &quot;Okay&quot;</code> is python code.</p>""")
 
 

@@ -36,7 +36,7 @@ Topic :: Text Processing :: Filters
 
 setup(
     name = 'bond-smartypants',
-    version = '1.5_2.0',
+    version = '1.5_2.1',
     author = 'Chad Miller',
     maintainer = "Anthony O'Brien",
     maintainer_email = "anthony@bond{spam=NO!}gifts.com",
