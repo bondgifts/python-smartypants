@@ -2,6 +2,8 @@
 python-smartypants
 ==================
 
+*This package is deprecated: We no longer actively develop this library. Note that there are several issues that creep up when using unicode with this package---you've been warned!*
+
 SmartyPants is a tool for converting plain ASCII punctuation characters into
 "smart" HTML entities, such as "straight" quotes into "curly" quotes and
 "---" into em-dashes.
